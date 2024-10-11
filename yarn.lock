@@ -3775,6 +3775,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-catalog-backend-module-github-org@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@backstage/plugin-catalog-backend-module-github-org@npm:0.3.1"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.0.0"
+    "@backstage/config": "npm:^1.2.0"
+    "@backstage/plugin-catalog-backend-module-github": "npm:^0.7.4"
+    "@backstage/plugin-catalog-node": "npm:^1.13.0"
+    "@backstage/plugin-events-node": "npm:^0.4.0"
+  checksum: 10c0/a6dc2d964ebc5ac76a0d3bf4bbd27c3d680f97fb16ba481d66cda7f40a8d85a1d0e84610fa78ccc7b70c46159ae68939064c49ca481127035bb603385ff29df4
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-catalog-backend-module-github@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "@backstage/plugin-catalog-backend-module-github@npm:0.7.4"
+  dependencies:
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-plugin-api": "npm:^1.0.0"
+    "@backstage/catalog-client": "npm:^1.7.0"
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/config": "npm:^1.2.0"
+    "@backstage/integration": "npm:^1.15.0"
+    "@backstage/plugin-catalog-backend": "npm:^1.26.1"
+    "@backstage/plugin-catalog-common": "npm:^1.1.0"
+    "@backstage/plugin-catalog-node": "npm:^1.13.0"
+    "@backstage/plugin-events-node": "npm:^0.4.0"
+    "@octokit/graphql": "npm:^5.0.0"
+    "@octokit/rest": "npm:^19.0.3"
+    git-url-parse: "npm:^14.0.0"
+    lodash: "npm:^4.17.21"
+    minimatch: "npm:^9.0.0"
+    node-fetch: "npm:^2.7.0"
+    uuid: "npm:^9.0.0"
+  checksum: 10c0/1bd54c43d911d8e5a021b7fef005c345d1304dc68ca70a1858b48b059368ba04e4f26a93eb61cfc29fc33b23251504969c0aefad6df5b1369d668291faffffb6
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-catalog-backend-module-logs@npm:^0.1.0":
   version: 0.1.1
   resolution: "@backstage/plugin-catalog-backend-module-logs@npm:0.1.1"
@@ -13480,6 +13518,7 @@ __metadata:
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.0"
     "@backstage/plugin-auth-node": "npm:^0.5.2"
     "@backstage/plugin-catalog-backend": "npm:^1.26.0"
+    "@backstage/plugin-catalog-backend-module-github-org": "npm:^0.3.1"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.0"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.0"
     "@backstage/plugin-permission-backend": "npm:^0.5.49"
