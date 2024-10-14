@@ -37,6 +37,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
+import { InnersourceExchangePage } from 'backstage-plugin-innersource-exchange';
 
 const app = createApp({
   apis,
@@ -107,6 +108,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/innersource-exchange" element={<InnersourceExchangePage />} />
   </FlatRoutes>
 );
 
