@@ -1,0 +1,1 @@
+export { MarketPlacePage } from './MarketPlacePage'

@@ -27,6 +27,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -78,6 +79,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
+          <SidebarItem
+            icon={DeviceHubIcon}
+            to="innersource-exchange"
+            text="Exchange"
+          />
           {/* Items in this group will be scrollable if they run out of space */}
         </SidebarScrollWrapper>
       </SidebarGroup>
