@@ -1,1 +1,1 @@
-export { MarketPlacePage } from './MarketPlacePage'
+export { MarketPlacePage } from './MarketPlacePage';
