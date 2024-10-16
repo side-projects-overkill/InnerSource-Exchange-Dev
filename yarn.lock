@@ -9145,6 +9145,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@redhat-developer/red-hat-developer-hub-theme@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@redhat-developer/red-hat-developer-hub-theme@npm:0.4.0"
+  peerDependencies:
+    "@backstage/theme": ^0.5.2
+    "@emotion/react": ^11.11.1
+    "@emotion/styled": ^11.11.0
+    "@material-ui/core": ^4.12.4
+    "@material-ui/icons": ^4.11.3
+    "@mui/icons-material": ^5.14.19
+    "@mui/material": ^5.14.20
+  checksum: 10c0/43fc2b68866a7e2140cccb1153d65dfcc9457e56ec087cbb96e350cc13edb7c74ddcebe7225f4904e308c8b1f3066c974350b041a5855ffd9d2ad10e9d22670a
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.19.2":
   version: 1.19.2
   resolution: "@remix-run/router@npm:1.19.2"
@@ -13259,6 +13274,7 @@ __metadata:
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@playwright/test": "npm:^1.32.3"
+    "@redhat-developer/red-hat-developer-hub-theme": "npm:^0.4.0"
     "@testing-library/dom": "npm:^9.0.0"
     "@testing-library/jest-dom": "npm:^6.0.0"
     "@testing-library/react": "npm:^14.0.0"
@@ -13679,7 +13695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0, axios@npm:^1.4.0, axios@npm:^1.6.0, axios@npm:^1.7.4":
+"axios@npm:^1.0.0, axios@npm:^1.4.0, axios@npm:^1.6.0, axios@npm:^1.7.4, axios@npm:^1.7.7":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -13866,6 +13882,7 @@ __metadata:
   resolution: "backend@workspace:packages/backend"
   dependencies:
     "@backstage/backend-defaults": "npm:^0.5.0"
+    "@backstage/backend-plugin-api": "npm:^1.0.0"
     "@backstage/cli": "npm:^0.27.1"
     "@backstage/config": "npm:^1.2.0"
     "@backstage/plugin-app-backend": "npm:^0.3.74"
@@ -13874,6 +13891,7 @@ __metadata:
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.0"
     "@backstage/plugin-auth-node": "npm:^0.5.2"
     "@backstage/plugin-catalog-backend": "npm:^1.26.0"
+    "@backstage/plugin-catalog-backend-module-github": "npm:^0.7.4"
     "@backstage/plugin-catalog-backend-module-github-org": "npm:^0.3.1"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.0"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.0"
@@ -13893,6 +13911,7 @@ __metadata:
     "@types/express-serve-static-core": "npm:^4.17.5"
     "@types/luxon": "npm:^2.0.4"
     app: "link:../app"
+    axios: "npm:^1.7.7"
     backstage-plugin-innersource-exchange-backend: "workspace:^"
     better-sqlite3: "npm:^9.0.0"
     node-gyp: "npm:^10.0.0"
