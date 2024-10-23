@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "SkillEntityV1alpha1",
+  "description": "Skills entity schema",
+  "$ref": "Entity",
+  "examples": [
+    {
+      "apiVersion": "console.one.redhat.com/v1alpha1",
+      "kind": "Skill",
+      "metadata": {
+        "name": "python",
+        "title": "Python",
+        "description": "User knowing python can have this skill",
+        "namespace": "company"
+      },
+      "spec": {
+        "users": ["user:default/foo", "user:default/bar"],
+        "color": "#333",
+        "type": "Languages"
+      }
+    }
+  ],
+  "type": "object",
+  "required": ["apiVersion", "kind"]
+}

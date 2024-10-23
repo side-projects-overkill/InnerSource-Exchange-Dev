@@ -58,6 +58,7 @@ import {
   EntityKubernetesContent,
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
+import { UserEntitySkillsCard } from 'backstage-plugin-innersource-exchange';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -304,6 +305,9 @@ const userPage = (
         </Grid>
         <Grid item xs={12} md={6}>
           <EntityOwnershipCard variant="gridItem" />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <UserEntitySkillsCard variant='gridItem'/>
         </Grid>
       </Grid>
     </EntityLayout.Route>

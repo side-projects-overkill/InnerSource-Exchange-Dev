@@ -1,1 +1,5 @@
-export { innersourceExchangePlugin, InnersourceExchangePage } from './plugin';
+export {
+  innersourceExchangePlugin,
+  InnersourceExchangePage,
+  UserEntitySkillsCard,
+} from './plugin';

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "ProjectEntityV1alpha1",
+  "description": "Projects entity schema",
+  "$ref": "Entity",
+  "examples": [
+    {
+      "apiVersion": "console.one.redhat.com/v1alpha1",
+      "kind": "Project",
+      "metadata": {
+        "name": "project-1",
+        "title": "Project 1",
+        "description": "Some description of project",
+        "namespace": "company",
+        "createdAt": "22/10/2024",
+        "createdBy": "user:guest"
+      },
+      "spec": {
+        "skills": [],
+        "collaborators": []
+      }
+    }
+  ],
+  "type": "object",
+  "required": ["apiVersion", "kind"]
+}
