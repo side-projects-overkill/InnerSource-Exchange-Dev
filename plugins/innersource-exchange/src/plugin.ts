@@ -1,4 +1,5 @@
 import {
+  createComponentExtension,
   createPlugin,
   createRoutableExtension,
 } from '@backstage/core-plugin-api';
@@ -18,5 +19,14 @@ export const InnersourceExchangePage = innersourceExchangePlugin.provide(
     component: () =>
       import('./components/MarketPlace').then(m => m.MarketPlacePage),
     mountPoint: rootRouteRef,
+  }),
+);
+
+export const UserEntitySkillsCard = innersourceExchangePlugin.provide(
+  createComponentExtension({
+    name: 'UserEntitySkillsCard',
+    component: {
+      lazy: () => import('./components/SkillsCard').then(m => m.SkillsCard),
+    },
   }),
 );

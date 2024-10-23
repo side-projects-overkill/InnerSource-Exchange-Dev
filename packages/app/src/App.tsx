@@ -39,6 +39,7 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { InnersourceExchangePage } from 'backstage-plugin-innersource-exchange';
 import { getThemes } from '@redhat-developer/red-hat-developer-hub-theme';
+import { CatalogUnprocessedEntitiesPage } from '@backstage/plugin-catalog-unprocessed-entities';
 
 const app = createApp({
   apis,
@@ -114,6 +115,11 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/innersource-exchange" element={<InnersourceExchangePage />} />
+    <Route
+      path="/catalog-unprocessed-entities"
+      element={<CatalogUnprocessedEntitiesPage />}
+    />
+    ;
   </FlatRoutes>
 );
 

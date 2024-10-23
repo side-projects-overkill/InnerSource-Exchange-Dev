@@ -3,6 +3,8 @@ import {
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
+import { ExchangeDatabaseClient } from './database';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 
 /**
  * innersourceExchangePlugin backend plugin
@@ -17,13 +19,33 @@ export const innersourceExchangePlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         logger: coreServices.logger,
         config: coreServices.rootConfig,
-        database: coreServices.database,
+        databaseService: coreServices.database,
+        auth: coreServices.auth,
+        catalog: catalogServiceRef,
+        discovery: coreServices.discovery,
       },
-      async init({ httpRouter, logger, config }) {
+      async init({
+        httpRouter,
+        logger,
+        discovery,
+        config,
+        auth,
+        databaseService,
+        catalog,
+      }) {
+        const database = await ExchangeDatabaseClient.create(
+          await databaseService.getClient(),
+          false,
+        );
+
         httpRouter.use(
           await createRouter({
             logger,
             config,
+            auth,
+            database,
+            catalog,
+            discovery,
           }),
         );
         httpRouter.addAuthPolicy({

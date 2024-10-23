@@ -21,7 +21,7 @@ async function fetchUserSkillsFromGitHub(
 ): Promise<string[]> {
   try {
     const repos = await axios.get(
-      `${baseUrl}/users/${username}/repos?type=public`,
+      `${baseUrl}/users/${username}/repos?type=owner`,
       {
         ...(authToken.length > 0 && {
           headers: {
