@@ -91,4 +91,18 @@ export class ExchangeDatabaseClient {
       .where('id', id);
     return result;
   }
+
+  async getAllProjects() {
+    const result = await this.databsase
+      .table<ProjectsTableModal>(this.PROJECTS_TABLE)
+      .select();
+    return result.map(mapProjectModelToProject);
+  }
+
+  async getAllSkills() {
+    const result = await this.databsase
+      .table<SkillsTableModal>(this.SKILLS)
+      .select();
+    return result.map(mapSkillModelToSkill);
+  }
 }

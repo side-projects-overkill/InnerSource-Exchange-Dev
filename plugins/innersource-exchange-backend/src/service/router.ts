@@ -17,7 +17,7 @@ import {
   projectToProjectEntity,
   skillToSkillEntity,
 } from '../module/lib/utils';
-import shortUUID from 'short-uuid';
+import { v4 } from 'uuid';
 import { kebabCase } from 'lodash';
 
 export type RouterOptions = {
@@ -51,6 +51,33 @@ export async function createRouter(
     response.json({ status: 'ok' });
   });
 
+  // Get all
+  router.get('/projects', async (req, res) => {
+    const result = await database.getAllProjects();
+    res.status(200).json({
+      data: result,
+      pageInfo: {
+        page: 1,
+        pageSize: 100,
+        total: result.length,
+        offset: 0,
+      },
+    });
+  });
+
+  router.get('/skills', async (req, res) => {
+    const result = await database.getAllSkills();
+    res.status(200).json({
+      data: result,
+      pageInfo: {
+        page: 1,
+        pageSize: 100,
+        total: result.length,
+        offset: 0,
+      },
+    });
+  });
+
   // Skill routes
   router.post('/skill', async (req, res) => {
     const skillData = req.body.data as Skill;
@@ -59,7 +86,7 @@ export async function createRouter(
       return;
     }
 
-    skillData.id = shortUUID().generate();
+    skillData.id = v4();
 
     if (await database.getSkillByName(skillData.name)) {
       res.json({ message: 'The skill already exists' });
@@ -99,10 +126,13 @@ export async function createRouter(
       `skill:default/${kebabCase(data.name)}`,
       token,
     );
-    if (currLoc) await catalog.removeLocationById(currLoc.id, token);
-    // delete from database
-    await database.removeSkillById(data.id);
-    res.status(200).json({ message: 'deleted successfully' });
+    if (currLoc) {
+      await catalog.removeLocationById(currLoc.id, token);
+      // delete from database
+      await database.removeSkillById(data.id);
+      res.status(200).json({ message: 'deleted successfully' });
+    }
+    res.status(404).send('Location not found. Failed to delete');
   });
 
   // Project Routes
@@ -117,7 +147,7 @@ export async function createRouter(
       return;
     }
 
-    projectData.id = shortUUID().generate();
+    projectData.id = v4();
     projectData.createdOn = new Date().toISOString();
 
     const result = await database.insertProject(projectData);
@@ -145,14 +175,20 @@ export async function createRouter(
     }
     // remove from catalog
     const token = await getCatalogPluginToken();
-    const currLoc = await catalog.getLocationByEntity(
+    const currentLocation = await catalog.getLocationByEntity(
       `project:default/${kebabCase(data.name)}`,
       token,
     );
-    if (currLoc) await catalog.removeLocationById(currLoc.id, token);
+
+    if (currentLocation) {
+      console.log(currentLocation.id);
+      await catalog.removeLocationById(currentLocation.id, token);
+      await database.removeProjectById(data.id);
+      res.status(200).json({ message: 'deleted successfully' });
+      return;
+    }
+    res.status(500).send('Location not found or failed to delete project');
     // delete from database
-    await database.removeProjectById(data.id);
-    res.status(200).json({ message: 'deleted successfully' });
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });

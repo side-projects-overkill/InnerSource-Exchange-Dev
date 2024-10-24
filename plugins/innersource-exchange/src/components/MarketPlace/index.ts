@@ -1,1 +1,0 @@
-export { MarketPlacePage } from './MarketPlacePage';
