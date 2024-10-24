@@ -1,3 +1,5 @@
+import { Entity } from '@backstage/catalog-model';
+
 export type Skill = {
   id: string;
   name: string;
@@ -20,8 +22,8 @@ export type ProjectData = {
   extras?: object;
 };
 
-export type ProjectEntity = {
-  apiVersion: 'console.one.redhat.com/v1alpha1';
+export type ProjectEntity = Entity & {
+  apiVersion: 'backstage.io/v1alpha1';
   kind: 'Project';
   metadata: {
     name: string;
@@ -41,8 +43,8 @@ export type ProjectEntity = {
   };
 };
 
-export type SkillEntity = {
-  apiVersion: 'console.one.redhat.com/v1alpha1';
+export type SkillEntity = Entity & {
+  apiVersion: 'backstage.io/v1alpha1';
   kind: 'Skill';
   metadata: {
     name: string;

@@ -17,7 +17,7 @@ export const InnersourceExchangePage = innersourceExchangePlugin.provide(
   createRoutableExtension({
     name: 'InnersourceExchangePage',
     component: () =>
-      import('./components/MarketPlace').then(m => m.MarketPlacePage),
+      import('./components/InnersourceExchangeGlobal').then(m => m.InnersourceExchangeGlobal),
     mountPoint: rootRouteRef,
   }),
 );

@@ -1,0 +1,1 @@
+export { SkillsTabContent } from './Skills';
