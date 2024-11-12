@@ -1,11 +1,11 @@
 import {
   ItemCardGrid,
   ItemCardHeader,
-  Progress
+  Progress,
 } from '@backstage/core-components';
 import {
   EntityKindFilter,
-  useEntityList
+  useEntityList,
 } from '@backstage/plugin-catalog-react';
 import {
   Box,
@@ -15,19 +15,25 @@ import {
   Divider,
   Grid,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { SkillEntity } from 'backstage-plugin-innersource-exchange-common';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { SkillForm } from './SkillForm';
 
 export const SkillsTabContent = () => {
   const { entities, updateFilters, filters } = useEntityList();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     updateFilters({ kind: new EntityKindFilter('Skill') });
   }, [updateFilters]);
 
   if (filters.kind?.value !== 'Skill') return <Progress />;
+
+  const handleClickOpen = () => {
+    setOpen(true); // Set dialog open
+  };
 
   return (
     <Box>
@@ -45,7 +51,7 @@ export const SkillsTabContent = () => {
           />
         </Grid>
         <Grid item xs={2}>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={handleClickOpen}>
             Add Skill
           </Button>
         </Grid>
@@ -60,40 +66,6 @@ export const SkillsTabContent = () => {
                     <Typography variant="h3">{d.metadata.title}</Typography>
                   </ItemCardHeader>
                 </CardMedia>
-                {/* <CardContent>
-                  <Grid container spacing={1} direction="column">
-                    <Grid item xs={12}>
-                      <Typography variant="body">
-                        {d.metadata.description}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      {d.spec.skills.map(skill => (
-                        <Chip
-                          clickable={false}
-                          key={skill}
-                          label={
-                            <EntityDisplayName
-                              hideIcon
-                              disableTooltip
-                              entityRef={skill}
-                            />
-                          }
-                        />
-                      ))}
-                    </Grid>
-                  </Grid>
-                </CardContent> */}
-                {/* <CardActions>
-                  <Button variant="contained" color="primary">
-                    <EntityPeekAheadPopover entityRef={stringifyEntityRef(d)}>
-                      View
-                    </EntityPeekAheadPopover>
-                  </Button>
-                </CardActions> */}
               </Card>
             ))}
           </ItemCardGrid>
@@ -102,6 +74,8 @@ export const SkillsTabContent = () => {
           <Divider />
         </Grid>
       </Grid>
+
+      <SkillForm open={open} setOpen={setOpen} />
     </Box>
   );
 };
