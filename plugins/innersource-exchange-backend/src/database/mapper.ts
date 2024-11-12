@@ -3,7 +3,6 @@ import {
   Skill,
 } from 'backstage-plugin-innersource-exchange-common';
 import { ProjectsTableModal, SkillsTableModal } from './types';
-
 export function mapProjectModelToProject(
   projectModel: ProjectsTableModal,
 ): ProjectData {

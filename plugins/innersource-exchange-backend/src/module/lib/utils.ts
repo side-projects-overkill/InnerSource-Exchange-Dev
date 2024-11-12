@@ -24,7 +24,7 @@ export function ajvCompiledJsonSchemaValidator(schema: unknown): KindValidator {
 
 export function skillToSkillEntity(skill: Skill): SkillEntity {
   return {
-    apiVersion: 'console.one.redhat.com/v1alpha1',
+    apiVersion: 'backstage.io/v1alpha1',
     kind: 'Skill',
     metadata: {
       name: kebabCase(skill.name),
@@ -41,7 +41,7 @@ export function skillToSkillEntity(skill: Skill): SkillEntity {
 
 export function projectToProjectEntity(project: ProjectData): ProjectEntity {
   return {
-    apiVersion: 'console.one.redhat.com/v1alpha1',
+    apiVersion: 'backstage.io/v1alpha1',
     kind: 'Project',
     metadata: {
       name: kebabCase(project.name),

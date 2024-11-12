@@ -5636,6 +5636,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ctrl/tinycolor@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@ctrl/tinycolor@npm:4.1.0"
+  checksum: 10c0/813dd960366df057006a1b93d7403ec7a48db1e79bec846d38fab15a1e0f37efd3ab96b0c780a14867ddc1f4c5a473e403c5c88e96d212c544ad934411e5307f
+  languageName: node
+  linkType: hard
+
 "@dabh/diagnostics@npm:^2.0.2":
   version: 2.0.3
   resolution: "@dabh/diagnostics@npm:2.0.3"
@@ -14462,6 +14469,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.0.0"
     backstage-plugin-innersource-exchange-common: "workspace:^"
     msw: "npm:^1.0.0"
+    mui-color-input: "npm:^4.0.2"
     react: "npm:^16.13.1 || ^17.0.0 || ^18.0.0"
     react-use: "npm:^17.2.4"
   peerDependencies:
@@ -24602,6 +24610,25 @@ __metadata:
   bin:
     msw: cli/index.js
   checksum: 10c0/2deb2ab740f2c937d74d9141c0f78864f3d45b44b939980a05b317a8c0eb81b3ca9205311eec3baabe0be0da63a3188f174c2657c70d31cbc45c8492f043a4a0
+  languageName: node
+  linkType: hard
+
+"mui-color-input@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "mui-color-input@npm:4.0.2"
+  dependencies:
+    "@ctrl/tinycolor": "npm:^4.1.0"
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@mui/material": ^5.0.0 || ^6.0.0
+    "@types/react": ^18.0.0
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/8f8ad0c5a0ca4695a71fb3f806ca1e97c539f51444833ea7cae3d188745aa46b46f24ed1bb7e013cd7ca8cdf3d28ea73f764afe0a9a3e840eb2b0f338f6157a2
   languageName: node
   linkType: hard
 

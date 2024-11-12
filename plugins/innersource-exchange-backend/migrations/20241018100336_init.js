@@ -14,7 +14,7 @@ exports.up = async function (knex) {
     table.text('name').unique().notNullable();
     table.text('color').notNullable().defaultTo('#333');
     table.text('type');
-    table.text('users');
+    table.text('users').defaultTo('[]');
   });
 };
 

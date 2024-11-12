@@ -52,7 +52,7 @@ export async function createRouter(
   });
 
   // Get all
-  router.get('/projects', async (req, res) => {
+  router.get('/projects', async (_req, res) => {
     const result = await database.getAllProjects();
     res.status(200).json({
       data: result,
@@ -65,7 +65,7 @@ export async function createRouter(
     });
   });
 
-  router.get('/skills', async (req, res) => {
+  router.get('/skills', async (_req, res) => {
     const result = await database.getAllSkills();
     res.status(200).json({
       data: result,
@@ -132,6 +132,8 @@ export async function createRouter(
       await database.removeSkillById(data.id);
       res.status(200).json({ message: 'deleted successfully' });
     }
+    await database.removeSkillById(data.id);
+
     res.status(404).send('Location not found. Failed to delete');
   });
 
