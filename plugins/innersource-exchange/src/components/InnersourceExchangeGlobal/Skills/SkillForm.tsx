@@ -3,9 +3,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Popover,
   TextField,
 } from '@material-ui/core';
-import { MuiColorInput } from 'mui-color-input';
+import { SketchPicker } from 'react-color';
 import React, { useState } from 'react';
 import { addSkiil } from '../services';
 
@@ -14,14 +15,12 @@ export const SkillForm = (props: {
   open: boolean;
 }) => {
   const [submit, setSubmit] = useState(false);
+  const [showPicker, setPicker] = useState<any>();
   const [formValues, setFormValues] = useState({
     name: '',
     type: '',
     color: '#ffffff',
   });
-
-
-  
 
   const handleClickClose = () => {
     setSubmit(false); // set is form submitted flase
@@ -83,15 +82,28 @@ export const SkillForm = (props: {
             error={submit && !formValues.type}
           />
 
-          <MuiColorInput
-            id="color"
-            isAlphaHidden
-            format="hex"
+          <TextField
             label="Color"
-            value={formValues.color}
-            onChange={e => handleChange(e)}
-            style={{ marginTop: '1rem' }}
+            value={formValues?.color}
+            onClick={e => setPicker(e.currentTarget)}
+            fullWidth
+            margin="dense"
           />
+          <Popover
+            open={Boolean(showPicker)}
+            anchorEl={showPicker}
+            onClose={(e, r) => setPicker(null)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <SketchPicker
+              color={formValues.color}
+              disableAlpha
+              onChange={color => handleChange(color.hex)}
+            />
+          </Popover>
 
           <DialogActions>
             <Button color="primary" onClick={handleClickClose}>
