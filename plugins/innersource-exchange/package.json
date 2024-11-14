@@ -34,7 +34,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "axios": "^1.7.7",
     "backstage-plugin-innersource-exchange-common": "workspace:^",
-    "mui-color-input": "^4.0.2",
+    "react-color": "^2.19.3",
     "react-use": "^17.2.4"
   },
   "peerDependencies": {
@@ -48,6 +48,7 @@
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
+    "@types/react-color": "^2",
     "msw": "^1.0.0",
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0"
   },

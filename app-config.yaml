@@ -38,7 +38,7 @@ backend:
     externalAccess:
       - type: static
         options:
-          token: ${CURL_API_TOKEN}
+          token: yashoswal
           subject: backend-token
 
 integrations:
