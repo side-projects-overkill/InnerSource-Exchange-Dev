@@ -131,6 +131,7 @@ export async function createRouter(
       // delete from database
       await database.removeSkillById(data.id);
       res.status(200).json({ message: 'deleted successfully' });
+      return
     }
     await database.removeSkillById(data.id);
 

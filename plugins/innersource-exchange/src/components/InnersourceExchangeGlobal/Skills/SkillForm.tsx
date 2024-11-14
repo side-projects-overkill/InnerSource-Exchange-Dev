@@ -6,9 +6,8 @@ import {
   TextField,
 } from '@material-ui/core';
 import { MuiColorInput } from 'mui-color-input';
-import React from 'react';
-import { useState } from 'react';
-import { addSkiil } from '../services/index.js';
+import React, { useState } from 'react';
+import { addSkiil } from '../services';
 
 export const SkillForm = (props: {
   setOpen: (arg0: boolean) => void;
@@ -18,25 +17,30 @@ export const SkillForm = (props: {
   const [formValues, setFormValues] = useState({
     name: '',
     type: '',
-    color: '#ffffffff'
+    color: '#ffffff',
   });
+
+
+  
 
   const handleClickClose = () => {
     setSubmit(false); // set is form submitted flase
     props.setOpen(false); // Set dialog close
   };
   const handleChange = (e: any) => {
-    let id: string, value: string;
+    let id: string;
+    let value: string;
     if (!e?.target?.id) {
-      (id = 'color'), (value = e);
+      id = 'color';
+      value = e;
     } else {
       id = e.target.id;
       value = e.target.value;
     }
-      setFormValues(prevState => ({
-        ...prevState,
-        [id]: value,
-      }));
+    setFormValues(prevState => ({
+      ...prevState,
+      [id]: value,
+    }));
   };
 
   const validateForm = () => {
@@ -47,7 +51,7 @@ export const SkillForm = (props: {
   };
 
   const handleSubmit = () => {
-    addSkiil({...formValues,users:[]});
+    addSkiil({ ...formValues, users: [] });
     handleClickClose(); // Close the dialog after submission
   };
 
