@@ -309,6 +309,9 @@ const userPage = (
         <Grid item xs={12} md={6}>
           <UserEntitySkillsCard variant='gridItem'/>
         </Grid>
+        <Grid item xs={12} md={6}>
+          <EntityCatalogGraphCard height={300}/>
+        </Grid>
       </Grid>
     </EntityLayout.Route>
   </EntityLayout>

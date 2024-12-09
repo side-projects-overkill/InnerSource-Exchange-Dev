@@ -81,6 +81,7 @@ export async function createRouter(
   // Skill routes
   router.post('/skill', async (req, res) => {
     const skillData = req.body.data as Skill;
+    console.log('body',req.body);
     if (!skillData.name) {
       res.status(400).json({ message: 'Forget to send name?' });
       return;
@@ -89,7 +90,7 @@ export async function createRouter(
     skillData.id = v4();
 
     if (await database.getSkillByName(skillData.name)) {
-      res.json({ message: 'The skill already exists' });
+      res.status(403).json({ message: 'The skill already exists' });
       return;
     }
 
@@ -116,7 +117,7 @@ export async function createRouter(
 
   router.delete('/skill/:id', async (req, res) => {
     const data = await database.getSkillById(req.params.id);
-    if (!data) {
+    if (!data || !data.id) {
       res.status(404).json({ message: 'Skill not found' });
       return;
     }
@@ -131,7 +132,7 @@ export async function createRouter(
       // delete from database
       await database.removeSkillById(data.id);
       res.status(200).json({ message: 'deleted successfully' });
-      return
+      return;
     }
     await database.removeSkillById(data.id);
 

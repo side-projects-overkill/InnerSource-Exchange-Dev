@@ -8,14 +8,17 @@ import {
 } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
 import React, { useState } from 'react';
-import { addSkiil } from '../services';
+import { useApi } from '@backstage/core-plugin-api';
+import { innersourceExchangeApiRef } from '../../../api';
 
 export const SkillForm = (props: {
   setOpen: (arg0: boolean) => void;
   open: boolean;
 }) => {
+  const innersourceApi = useApi(innersourceExchangeApiRef);
+
   const [submit, setSubmit] = useState(false);
-  const [showPicker, setPicker] = useState<any>();
+  const [showPicker, setShowPicker] = useState<any>();
   const [formValues, setFormValues] = useState({
     name: '',
     type: '',
@@ -50,7 +53,10 @@ export const SkillForm = (props: {
   };
 
   const handleSubmit = () => {
-    addSkiil({ ...formValues, users: [] });
+    innersourceApi
+      .addSkill({ ...formValues, users: [] })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
     handleClickClose(); // Close the dialog after submission
   };
 
@@ -58,7 +64,7 @@ export const SkillForm = (props: {
     <Dialog open={props.open} onClose={handleClickClose}>
       <DialogContent>
         {/* Form content */}
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off">
           <TextField
             label="Name"
             id="name"
@@ -85,14 +91,14 @@ export const SkillForm = (props: {
           <TextField
             label="Color"
             value={formValues?.color}
-            onClick={e => setPicker(e.currentTarget)}
+            onClick={e => setShowPicker(e.currentTarget)}
             fullWidth
             margin="dense"
           />
           <Popover
             open={Boolean(showPicker)}
             anchorEl={showPicker}
-            onClose={(e, r) => setPicker(null)}
+            onClose={(e, r) => setShowPicker(null)}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
@@ -109,7 +115,14 @@ export const SkillForm = (props: {
             <Button color="primary" onClick={handleClickClose}>
               Cancel
             </Button>
-            <Button color="primary" type="submit" onClick={validateForm}>
+            <Button
+              color="primary"
+              type="button"
+              onClick={() => {
+                validateForm();
+                handleSubmit();
+              }}
+            >
               Submit
             </Button>
           </DialogActions>
