@@ -1,7 +1,7 @@
 import { Entity } from '@backstage/catalog-model';
 
 export type Skill = {
-  id: string;
+  id?: string;
   name: string;
   color: string;
   type: string;
@@ -12,14 +12,14 @@ export type ProjectData = {
   id: string;
   name: string;
   description: string;
-  owner: string;
+  owner: string; // 'atharva'
   startDate?: string;
   endDate?: string;
   skills: string[];
   collaborators: string[];
   type?: string;
   createdOn: string;
-  extras?: object;
+  extras?: object; // {status, comments: [{id:,user:,content:}]}
 };
 
 export type ProjectEntity = Entity & {
@@ -49,7 +49,7 @@ export type SkillEntity = Entity & {
   metadata: {
     name: string;
     title?: string;
-    skillId: string;
+    skillId?: string;
   };
   spec: {
     color?: string;

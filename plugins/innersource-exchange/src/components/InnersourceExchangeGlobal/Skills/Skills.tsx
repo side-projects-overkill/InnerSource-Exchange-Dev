@@ -1,10 +1,7 @@
-import {
-  ItemCardGrid,
-  ItemCardHeader,
-  Progress,
-} from '@backstage/core-components';
+import { ItemCardGrid, Progress } from '@backstage/core-components';
 import {
   EntityKindFilter,
+  EntityTextFilter,
   useEntityList,
 } from '@backstage/plugin-catalog-react';
 import {
@@ -24,10 +21,14 @@ import { SkillForm } from './SkillForm';
 export const SkillsTabContent = () => {
   const { entities, updateFilters, filters } = useEntityList();
   const [open, setOpen] = useState(false);
+  const [filterText, setFilterText] = useState<string>();
 
   useEffect(() => {
-    updateFilters({ kind: new EntityKindFilter('Skill') });
-  }, [updateFilters]);
+    updateFilters({
+      kind: new EntityKindFilter('Skill'),
+      ...(filterText && { text: new EntityTextFilter(filterText) }),
+    });
+  }, [updateFilters, filterText]);
 
   if (filters.kind?.value !== 'Skill') return <Progress />;
 
@@ -46,6 +47,7 @@ export const SkillsTabContent = () => {
             fullWidth
             variant="standard"
             label="Find a skill"
+            onChange={e => setFilterText(e.target.value)}
             placeholder="Enter a keyword"
             helperText="Enter some text to search"
           />
@@ -59,15 +61,37 @@ export const SkillsTabContent = () => {
       <Grid container>
         <Grid item xs={12}>
           <ItemCardGrid>
-            {(entities as SkillEntity[]).map(d => (
-              <Card key={d.metadata.uid}>
-                <CardMedia style={{ backgroundColor: d.spec.color }}>
-                  <ItemCardHeader subtitle={d.spec.type}>
+            {(entities as SkillEntity[]).map(d => {
+              const getFontColor = (hexColor: string) => {
+                // Convert HEX to RGB
+                const bigint = parseInt(hexColor.slice(1), 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+
+                // Calculate perceived brightness
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+                // Return black for light backgrounds and white for dark backgrounds
+                return brightness > 128 ? '#000' : '#FFF';
+              };
+
+              const fontColor = getFontColor(d.spec.color ?? '000');
+              return (
+                <Card elevation={0} key={d.metadata.uid}>
+                  <CardMedia
+                    style={{
+                      backgroundColor: d.spec.color,
+                      padding: '16px 16px 24px',
+                      color: fontColor,
+                    }}
+                  >
+                    <Typography variant="subtitle2">{d.spec.type}</Typography>
                     <Typography variant="h3">{d.metadata.title}</Typography>
-                  </ItemCardHeader>
-                </CardMedia>
-              </Card>
-            ))}
+                  </CardMedia>
+                </Card>
+              );
+            })}
           </ItemCardGrid>
         </Grid>
         <Grid item xs={12}>
