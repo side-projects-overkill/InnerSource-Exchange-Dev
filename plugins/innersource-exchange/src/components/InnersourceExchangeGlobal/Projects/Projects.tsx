@@ -25,6 +25,7 @@ import {
 } from '@material-ui/core';
 import { ProjectEntity } from 'backstage-plugin-innersource-exchange-common';
 import React, { useEffect } from 'react';
+import { CreateProjectModal } from '../../CreateWorkstreamModal';
 
 export const ProjectsTabContent = () => {
   const { entities, updateFilters, filters } = useEntityList();
@@ -51,9 +52,7 @@ export const ProjectsTabContent = () => {
           />
         </Grid>
         <Grid item xs={2}>
-          <Button color="primary" variant="contained">
-            Add Project
-          </Button>
+          <CreateProjectModal />
         </Grid>
       </Grid>
       <Grid container>
