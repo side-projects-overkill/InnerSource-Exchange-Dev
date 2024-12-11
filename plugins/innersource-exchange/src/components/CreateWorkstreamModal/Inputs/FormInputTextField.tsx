@@ -11,7 +11,6 @@ export const FormInputTextField = (props: {
 }) => {
   const { label, rules, name, placeholder, textFieldProps } = props;
   const { control } = useFormContext();
-
   return (
     <Controller
       name={name}
@@ -31,7 +30,7 @@ export const FormInputTextField = (props: {
             helperText={error ? error.message : textFieldProps?.helperText}
             onBlur={onBlur}
             onChange={e => onChange(e.target.value)}
-            value={value ?? ''}
+            value={value ?? null}
           />
         );
       }}
