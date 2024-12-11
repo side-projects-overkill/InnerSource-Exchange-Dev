@@ -1,16 +1,5 @@
-import {
-  stringifyEntityRef,
-  SystemEntity,
-  UserEntity,
-} from '@backstage/catalog-model';
-import { ErrorBoundary, Table, TableColumn } from '@backstage/core-components';
+import { ErrorBoundary } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
-import {
-  EntityDisplayName,
-  EntityRefLink,
-  humanizeEntityRef,
-  useEntityList,
-} from '@backstage/plugin-catalog-react';
 import {
   Box,
   Button,
@@ -23,15 +12,14 @@ import {
   Grid,
   makeStyles,
   Tab,
-  TextField,
   Theme,
   Typography,
 } from '@material-ui/core';
-import { Autocomplete, TabContext, TabList } from '@material-ui/lab';
+import {  TabContext, TabList } from '@material-ui/lab';
 import TabPanel from '@material-ui/lab/TabPanel';
 // import { kebabCase } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+import React, {  useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { innersourceExchangeApiRef } from '../../api';
 // import {
 //   CustomUserEntity,
@@ -43,6 +31,7 @@ import { innersourceExchangeApiRef } from '../../api';
 // import { MemberDetailsForm } from './Forms/MemberDetailsForm';
 // import { WorkstreamDetailsForm } from './Forms/WorkstreamDetailsForm';
 import { Form1, Form2 } from './Inputs/types';
+import { CollaboratorsForm } from './Forms/CollaboratorsForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   fullHeightDialog: {
@@ -298,7 +287,7 @@ export const CreateProjectModal = () => {
       searchQuery: null,
       selectedMembers: [],
     },
-    mode: 'onSubmit',
+    mode: 'all',
   });
 
   const handleChange = (val: string) => {
@@ -393,7 +382,7 @@ export const CreateProjectModal = () => {
         <ErrorBoundary slackChannel={{ name: 'one-platform' }}>
           <FormProvider {...form2}>
             <Typography variant="h2">Collaborators form</Typography>
-            {/* <MemberDetailsForm form1={form1} /> */}
+            <CollaboratorsForm form1={form1} />
             <></>
           </FormProvider>
         </ErrorBoundary>
@@ -432,8 +421,8 @@ export const CreateProjectModal = () => {
       };
     if (value === '2')
       return {
-        // onClick: form2.handleSubmit(() => setValue('3')),
-        onClick: () => setValue('3'),
+        onClick: form2.handleSubmit(() => setValue('3')),
+        // onClick: () => setValue('3'),
         children: 'Next',
       };
     return {
