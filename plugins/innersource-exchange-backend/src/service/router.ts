@@ -81,7 +81,7 @@ export async function createRouter(
   // Skill routes
   router.post('/skill', async (req, res) => {
     const skillData = req.body.data as Skill;
-    console.log('body',req.body);
+    console.log('body', req.body);
     if (!skillData.name) {
       res.status(400).json({ message: 'Forget to send name?' });
       return;
@@ -106,13 +106,34 @@ export async function createRouter(
     });
   });
 
-  router.get('/skill/:id', async (req, res) => {
+  router.put('/skill/:id', async (req, res) => {
     const result = await database.getSkillById(req.params.id);
-    if (!result) {
-      res.status(404).json({ message: 'Skill not found' });
+    // const result2 = await database.getSkillByName(req.params.id);
+
+    if (result) {
+      const newData = {
+        ...result,
+        ...req.body.data,
+      };
+      database.updateSkillById(req.params.id, newData);
+      res.json({ data: newData });
       return;
     }
-    res.json(skillToSkillEntity(result));
+    res.status(404).json({ message: 'Skill not found' });
+  });
+
+  router.get('/skill/:id', async (req, res) => {
+    const result = await database.getSkillById(req.params.id);
+    const result2 = await database.getSkillByName(req.params.id);
+    if (result) {
+      res.json(skillToSkillEntity(result));
+      return;
+    }
+    if (result2) {
+      res.json(skillToSkillEntity(result2));
+      return;
+    }
+    res.status(404).json({ message: 'Skill not found' });
   });
 
   router.delete('/skill/:id', async (req, res) => {

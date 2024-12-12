@@ -30,7 +30,7 @@ export const FormInputTextField = (props: {
             helperText={error ? error.message : textFieldProps?.helperText}
             onBlur={onBlur}
             onChange={e => onChange(e.target.value)}
-            value={value ?? null}
+            value={value ?? ''}
           />
         );
       }}

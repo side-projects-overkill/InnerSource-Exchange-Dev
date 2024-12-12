@@ -12,7 +12,7 @@ export const InnersourceExchangeGlobal = () => {
   return (
     <PageWithHeader themeId="home" title="InnerSource Exchange">
       <Content stretch noPadding>
-        <EntityListProvider>
+        <EntityListProvider pagination={{ limit: 100 }}>
           <TabbedLayout>
             <TabbedLayout.Route path="projects" title="Projects">
               <ProjectsTabContent />

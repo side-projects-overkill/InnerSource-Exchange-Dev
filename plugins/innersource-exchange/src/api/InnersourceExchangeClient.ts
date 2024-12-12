@@ -1,6 +1,9 @@
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { InnersourceExchangeApi } from './InnersourceExchangeApi';
-import { Skill } from 'backstage-plugin-innersource-exchange-common';
+import {
+  ProjectData,
+  Skill,
+} from 'backstage-plugin-innersource-exchange-common';
 
 export class InnersourceExchangeClient implements InnersourceExchangeApi {
   constructor(
@@ -15,6 +18,18 @@ export class InnersourceExchangeClient implements InnersourceExchangeApi {
   async addSkill(data: Skill) {
     const baseURL = `${await this.getBaseUrl()}/skill`;
     const resp = await this.fetchApi.fetch(baseURL, {
+      method: 'POST',
+      body: JSON.stringify({ data }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+    return await resp.json();
+  }
+
+  async addNewProject(data: ProjectData) {
+    const baseURL = `${await this.getBaseUrl()}/project`;
+    const resp = await this.fetchApi.fetch(baseURL.toString(), {
       method: 'POST',
       body: JSON.stringify({ data }),
       headers: {

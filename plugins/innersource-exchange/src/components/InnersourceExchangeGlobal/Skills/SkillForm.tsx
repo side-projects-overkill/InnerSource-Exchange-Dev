@@ -98,7 +98,7 @@ export const SkillForm = (props: {
           <Popover
             open={Boolean(showPicker)}
             anchorEl={showPicker}
-            onClose={(e, r) => setShowPicker(null)}
+            onClose={() => setShowPicker(null)}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',

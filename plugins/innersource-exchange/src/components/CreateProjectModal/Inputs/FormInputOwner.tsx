@@ -20,7 +20,7 @@ export const FormInputOwnerName = () => {
   const [ownerName, setOwnerName] = useState<string>();
   const [loading, setLoading] = useState(false);
 
-  const {} = useAsync(async () => {
+  useAsync(async () => {
     if (ownerName === undefined) {
       const res = await catalogApi.queryEntities({
         filter: { kind: 'User' },
@@ -79,7 +79,6 @@ export const FormInputOwnerName = () => {
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => {
-        console.log(error);
         return (
           <Autocomplete
             value={value ?? null}
@@ -109,7 +108,7 @@ export const FormInputOwnerName = () => {
                 helperText={error?.message ?? 'Name of the project owner'}
                 variant="outlined"
                 placeholder="Enter Owner name"
-                required={true}
+                required
               />
             )}
           />

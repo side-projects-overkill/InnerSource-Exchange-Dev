@@ -30,22 +30,16 @@ import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutl
 
 import { Form1, TableRowDataType } from '../Inputs/types';
 
-
 export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
   const { form1 } = props;
-  const { lead } = form1.getValues();
+  const { owner } = form1.getValues();
   const catalogApi = useApi(catalogApiRef);
-  const {
-    control,
-    setValue,
-    formState,
-    setError,
-    clearErrors,
-  } = useFormContext<{
-    searchQuery: UserEntity | null;
-    kind: { label: string; value: string };
-    selectedMembers: TableRowDataType[];
-  }>();
+  const { control, setValue, formState, setError, clearErrors } =
+    useFormContext<{
+      searchQuery: UserEntity | null;
+      kind: { label: string; value: string };
+      selectedMembers: TableRowDataType[];
+    }>();
 
   const { fields, append, remove, update } = useFieldArray({
     control: control,
@@ -71,18 +65,10 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
     keyName: 'id',
   });
 
-  const [options, setOptions] = useState<(UserEntity)[]>(
-    [],
-  );
+  const [options, setOptions] = useState<UserEntity[]>([]);
   const [searchText, setSearchText] = useState('');
 
-
-  const roleOptions = [
-    'Workstream Lead',
-    'Technical Lead',
-    'Software Engineer',
-    'Quality Engineer',
-  ];
+  const roleOptions = ['Owner', 'Developer', 'Collaborator'];
 
   function handleRoleChange(
     evt: React.ChangeEvent<{ name?: string; value: unknown }>,
@@ -132,14 +118,14 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
               error={!!fieldError}
               value={data.role}
               label="Select Role"
-              disabled={data.role === 'Workstream Lead'}
+              disabled={data.role === 'Owner'}
               onChange={evt => {
                 handleRoleChange(evt, data, index);
               }}
             >
               {roleOptions.map(option => (
                 <MenuItem
-                  disabled={option === 'Workstream Lead'}
+                  disabled={option === 'Owner'}
                   key={option}
                   value={option}
                 >
@@ -176,7 +162,7 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
       sorting: false,
       width: '5%',
       render: data =>
-        data.role !== 'Workstream Lead' && (
+        data.role !== 'Owner' && (
           <Tooltip title="Remove member">
             <IconButton
               color="secondary"
@@ -198,19 +184,14 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
     }
   }
 
-  function setTableDataFn(
-    entity: UserEntity,
-    workstreamLead?: UserEntity,
-  ) {
+  function setTableDataFn(entity: UserEntity, workstreamLead?: UserEntity) {
     if (entity.metadata.uid === workstreamLead?.metadata.uid) return;
     if (fields.some(p => p.user.metadata.uid === entity.metadata.uid)) return;
     append({ user: entity, role: undefined });
   }
-  function handleInputSelectedEntity(
-    entity: UserEntity| null,
-  ) {
+  function handleInputSelectedEntity(entity: UserEntity | null) {
     if (entity) {
-      setTableDataFn(entity, lead);
+      setTableDataFn(entity, owner);
     }
   }
 
@@ -242,7 +223,7 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
     [catalogApi, setOptions, searchText, loading],
   );
 
-  const getOptionLabel = (option:UserEntity) =>
+  const getOptionLabel = (option: UserEntity) =>
     option.spec.profile
       ? `${option.spec.profile.displayName} (${option.spec.profile.email})`
       : humanizeEntityRef(option, {
@@ -291,7 +272,7 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
                     <TextField
                       {...params}
                       color="primary"
-                      label="Enter rover user/group name"
+                      label="Enter user name"
                       placeholder="Type here"
                       variant="outlined"
                       error={!!error}
@@ -307,11 +288,11 @@ export const CollaboratorsForm = (props: { form1: UseFormReturn<Form1> }) => {
       <Grid item xs={12}>
         <Table
           data={[
-            ...(lead
+            ...(owner
               ? [
                   {
-                    role: 'Workstream Lead',
-                    user: lead,
+                    role: 'Owner',
+                    user: owner,
                     id: 'first',
                   },
                 ]

@@ -1,4 +1,4 @@
-import { stringifyEntityRef } from '@backstage/catalog-model';
+import { parseEntityRef, stringifyEntityRef } from '@backstage/catalog-model';
 import {
   ItemCardGrid,
   ItemCardHeader,
@@ -7,7 +7,8 @@ import {
 import {
   EntityDisplayName,
   EntityKindFilter,
-  EntityPeekAheadPopover,
+  EntityRefLink,
+  EntityTextFilter,
   useEntityList,
 } from '@backstage/plugin-catalog-react';
 import {
@@ -24,15 +25,25 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ProjectEntity } from 'backstage-plugin-innersource-exchange-common';
-import React, { useEffect } from 'react';
-import { CreateProjectModal } from '../../CreateWorkstreamModal';
+import React, { useEffect, useState } from 'react';
+import { CreateProjectModal } from '../../CreateProjectModal';
+import { useRouteRef } from '@backstage/core-plugin-api';
+import { catalogPlugin } from '@backstage/plugin-catalog';
+import { useNavigate } from 'react-router-dom';
 
 export const ProjectsTabContent = () => {
   const { entities, updateFilters, filters } = useEntityList();
+  const [filterText, setFilterText] = useState<string>();
+
+  const catalogRoute = useRouteRef(catalogPlugin.routes.catalogEntity);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    updateFilters({ kind: new EntityKindFilter('Project') });
-  }, [updateFilters]);
+    updateFilters({
+      kind: new EntityKindFilter('Project'),
+      text: new EntityTextFilter(filterText ?? ''),
+    });
+  }, [updateFilters, filterText]);
 
   if (filters.kind?.value !== 'Project') return <Progress />;
 
@@ -47,6 +58,9 @@ export const ProjectsTabContent = () => {
             fullWidth
             variant="standard"
             label="Find a project"
+            onChange={e => {
+              setFilterText(e.target.value);
+            }}
             placeholder="Enter a keyword"
             helperText="Enter some text to search"
           />
@@ -92,11 +106,18 @@ export const ProjectsTabContent = () => {
                     </Grid>
                   </Grid>
                 </CardContent>
-                <CardActions>
-                  <Button variant="contained" color="primary">
-                    <EntityPeekAheadPopover entityRef={stringifyEntityRef(d)}>
-                      OPEN
-                    </EntityPeekAheadPopover>
+                <CardActions style={{ justifyContent: 'space-between' }}>
+                  <EntityRefLink entityRef={d.spec.owner} />
+                  <Button
+                    onClick={() => {
+                      navigate(
+                        catalogRoute(parseEntityRef(stringifyEntityRef(d))),
+                      );
+                    }}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    View
                   </Button>
                 </CardActions>
               </Card>
