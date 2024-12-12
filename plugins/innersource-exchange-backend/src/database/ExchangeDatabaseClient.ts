@@ -68,6 +68,15 @@ export class ExchangeDatabaseClient {
     return mapSkillModelToSkill(dbResult);
   }
 
+  async updateSkillById(skillId: string, newData: Skill) {
+    const [result] = await this.databsase
+      .table<SkillsTableModal>(this.SKILLS)
+      .where('id', skillId)
+      .first()
+      .update(mapSkillToSkillModel(newData), '*');
+    return result ? mapSkillModelToSkill(result) : 0;
+  }
+
   async getSkillByName(name: string) {
     const [dbResult] = await this.databsase
       .table<SkillsTableModal>(this.SKILLS)

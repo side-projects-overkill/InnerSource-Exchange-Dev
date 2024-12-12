@@ -1,8 +1,7 @@
 import { UserEntity } from '@backstage/catalog-model';
-import { CustomUserEntity, TableRowDataType } from '../../../types';
+import { SkillEntity } from 'backstage-plugin-innersource-exchange-common';
 
 export type Form2 = {
-  kind: { label: string; value: string } | null;
   searchQuery: UserEntity | null;
   selectedMembers: TableRowDataType[];
 };
@@ -10,8 +9,8 @@ export type Form2 = {
 export type Form1 = {
   name: string | undefined;
   description?: string;
-  owner: CustomUserEntity;
-  skills: CustomUserEntity;
+  owner?: UserEntity;
+  skills: SkillEntity[];
   startDate?: string;
   endDate?: string;
   type?: string;

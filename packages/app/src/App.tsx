@@ -38,7 +38,9 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { InnersourceExchangePage } from 'backstage-plugin-innersource-exchange';
-import { getThemes } from '@redhat-developer/red-hat-developer-hub-theme';
+import {
+  getAllThemes,
+} from '@redhat-developer/red-hat-developer-hub-theme';
 import { CatalogUnprocessedEntitiesPage } from '@backstage/plugin-catalog-unprocessed-entities';
 
 const app = createApp({
@@ -60,7 +62,7 @@ const app = createApp({
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
   },
-  themes: getThemes(),
+  themes: getAllThemes(),
   components: {
     SignInPage: props => (
       <SignInPage

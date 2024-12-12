@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { UserEntity } from '@backstage/catalog-model';
+import { parseEntityRef, UserEntity } from '@backstage/catalog-model';
 import { InfoCard, InfoCardVariants } from '@backstage/core-components';
 import { Chip } from '@material-ui/core';
 
@@ -23,13 +23,19 @@ export const UserEntitySkillsCard = (props: { variant: InfoCardVariants }) => {
   const { entity } = useEntity<CustomUserEntity>();
 
   return (
-    <InfoCard {...props} title="Skills">
-      {Array.isArray(entity.spec.skills) &&
-        entity.spec.skills.map(skill => (
+    <InfoCard
+      {...props}
+      title={`Skills (${
+        entity.relations?.filter(relation => relation.type === 'skill').length
+      })`}
+    >
+      {entity.relations
+        ?.filter(relation => relation.type === 'skill')
+        .map(skill => (
           <Chip
-            label={skill}
+            label={parseEntityRef(skill.targetRef).name}
             style={{ backgroundColor: getRandomColor(), color: '#fff' }}
-            key={skill}
+            key={parseEntityRef(skill.targetRef).name}
           />
         ))}
     </InfoCard>

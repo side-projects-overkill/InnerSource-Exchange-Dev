@@ -9,7 +9,7 @@ import { Autocomplete } from '@material-ui/lab';
 import { SkillEntity } from 'backstage-plugin-innersource-exchange-common';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useDebounce } from 'react-use';
+import { useAsync, useDebounce } from 'react-use';
 
 export const FormInputSkills = () => {
   const catalogApi = useApi(catalogApiRef);
@@ -20,9 +20,19 @@ export const FormInputSkills = () => {
 
   useEffect(() => {
     catalogApi
-      .queryEntities({ filter: { kind: 'Skill' }, limit: 20 })
+      .queryEntities({ filter: { kind: 'Skill' }, limit: 100 })
       .then(res => setSkillOptions(res.items as SkillEntity[]));
   }, [catalogApi]);
+
+  useAsync(async () => {
+    if (searchText === undefined) {
+      const res = await catalogApi.queryEntities({
+        filter: { kind: 'Skill' },
+        limit: 100,
+      });
+      setSkillOptions(res.items as SkillEntity[]);
+    }
+  }, [catalogApi, searchText]);
 
   useDebounce(
     () => {
@@ -51,6 +61,7 @@ export const FormInputSkills = () => {
         return (
           <Autocomplete
             multiple
+            disableCloseOnSelect
             options={skillOptions}
             getOptionSelected={(option, val) =>
               stringifyEntityRef(option) === stringifyEntityRef(val)
@@ -70,6 +81,7 @@ export const FormInputSkills = () => {
             onChange={(_e, val) => onChange(val)}
             onInputChange={(_, val) => {
               if (val.length > 2) setSearchText(val);
+              else setSearchText(undefined);
             }}
             value={value}
             renderInput={params => (

@@ -1,8 +1,10 @@
 import {
+  AuthService,
   coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { Config } from '@backstage/config';
+import { data as colorsMap } from '../constants/colours';
 
 import {
   GithubUser,
@@ -12,6 +14,8 @@ import {
 } from '@backstage/plugin-catalog-backend-module-github';
 import { githubOrgEntityProviderTransformsExtensionPoint } from '@backstage/plugin-catalog-backend-module-github-org';
 import axios, { AxiosError } from 'axios';
+import { SkillEntity } from 'backstage-plugin-innersource-exchange-common';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 // Helper function to fetch skills using GitHub username
 async function fetchUserSkillsFromGitHub(
@@ -58,12 +62,15 @@ async function fetchUserSkillsFromGitHub(
 }
 
 // This user transformer makes use of the built in logic, but also sets the description field
-const myUserTransformer = async (
-  user: GithubUser,
-  ctx: TransformerContext,
-  config: Config,
-) => {
-  const backstageUser = (await defaultUserTransformer(user, ctx)) as any;
+const myUserTransformer = async (options: {
+  user: GithubUser;
+  ctx: TransformerContext;
+  config: Config;
+  auth: AuthService;
+  innersourceApiBaseUrl: string;
+}) => {
+  const { ctx, user, auth, innersourceApiBaseUrl, config } = options;
+  const backstageUser = await defaultUserTransformer(user, ctx);
   if (backstageUser) {
     const apiBaseUrl =
       config
@@ -71,7 +78,7 @@ const myUserTransformer = async (
         ?.at(0)
         ?.getOptionalString('apiBaseUrl') ?? 'https://api.github.com';
 
-    const authToken =
+    const ghAuthToken =
       config
         .getOptionalConfigArray('integrations.github')
         ?.at(0)
@@ -79,10 +86,57 @@ const myUserTransformer = async (
     const skills = await fetchUserSkillsFromGitHub(
       apiBaseUrl,
       user.login,
-      authToken,
+      ghAuthToken,
     );
     backstageUser.metadata.description = 'Loaded from GitHub Org Data';
-    backstageUser.spec.skills = skills;
+
+    const credentials = await auth.getPluginRequestToken({
+      targetPluginId: 'innersource-exchange',
+      onBehalfOf: await auth.getOwnServiceCredentials(),
+    });
+
+    for (const skill of skills) {
+      const resp = await axios.get<SkillEntity>(
+        `${innersourceApiBaseUrl}/skill/${skill}`,
+        {
+          headers: { Authorization: `bearer ${credentials.token}` },
+          validateStatus: status => status < 500,
+        },
+      );
+      if (resp.status === 404) {
+        await axios.post(
+          `${innersourceApiBaseUrl}/skill`,
+          {
+            data: {
+              name: skill,
+              color: colorsMap[skill].color ?? '#333',
+              type: 'Language',
+              users: [stringifyEntityRef(backstageUser)],
+            },
+          },
+          {
+            headers: { Authorization: `bearer ${credentials.token}` },
+            validateStatus: status => status < 500,
+          },
+        );
+      } else {
+        const usersSet = new Set<string>(resp.data.spec.users).add(
+          stringifyEntityRef(backstageUser),
+        );
+        await axios.put(
+          `${innersourceApiBaseUrl}/skill/${resp.data.metadata.skillId}`,
+          {
+            data: {
+              users: Array.from(usersSet),
+            },
+          },
+          {
+            headers: { Authorization: `bearer ${credentials.token}` },
+            validateStatus: status => status < 500,
+          },
+        );
+      }
+    }
   }
   return backstageUser;
 };
@@ -95,10 +149,21 @@ const githubOrgModule = createBackendModule({
       deps: {
         githubOrg: githubOrgEntityProviderTransformsExtensionPoint,
         config: coreServices.rootConfig,
+        auth: coreServices.auth,
+        discovery: coreServices.discovery,
       },
-      async init({ githubOrg, config }) {
+      async init({ githubOrg, config, discovery, auth }) {
+        const innersourceApiBaseUrl = `${await discovery.getBaseUrl(
+          'innersource-exchange',
+        )}`;
         githubOrg.setUserTransformer((item, ctx) =>
-          myUserTransformer(item, ctx, config),
+          myUserTransformer({
+            user: item,
+            ctx,
+            config,
+            auth,
+            innersourceApiBaseUrl,
+          }),
         );
         githubOrg.setTeamTransformer(defaultOrganizationTeamTransformer);
       },
